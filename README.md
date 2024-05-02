@@ -1,2 +1,2 @@
 # BEP-project-Log-Analysis
-ERROR 404
+Welcome to the repository for my bachelor final project focused on the analysis of GitHub workflow logs using Large Language Models (LLMs). The primary objective of this project is to identify issues raised within the workflow logs and propose solutions to address them.
