@@ -15,3 +15,5 @@ jobs:
         name: Install NPM packages
       - run: node app.js
         name: Run Node Application
+      - run: python install
+      - run: python --version
