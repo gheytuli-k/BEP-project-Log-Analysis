@@ -42,7 +42,14 @@ class RepoCommits:
         :return: None
         """
 
-        pass
+        self.repo_owner = repo_owner
+        self.repo_name = repo_name
+        self.branch_name = branch_name
+        self.since = since
+        self.until = until
+        # self.per_page = per_page
+        # self.page = page
+
 
     def _make_request(self) -> None:
         """
