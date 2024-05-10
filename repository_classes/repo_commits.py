@@ -113,4 +113,8 @@ class RepoCommits:
         :return: List[str]
         """
 
-        pass
+        assert self.status_code != 0, "No request made yet, call _make_request() first"
+        assert self.status_code == 200, "Request failed, check status code"
+        data = self.response.json() 
+        commits = [commit["sha"] for commit in data]
+        return commits
