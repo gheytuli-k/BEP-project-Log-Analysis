@@ -30,7 +30,9 @@ class RepoCommits:
     """
 
     GITHUB_API_URL = "https://api.github.com"
-    status = 'No Request Made Yet'
+    status_code = 0
+    status_phrase = ""
+    status_description = "No request made yet"
 
     def __init__(self, repo_owner: str = None, repo_name: str = None, branch_name: str = "main", since: str = None, until: str = None, per_page: int = 100, page: int = 1) -> None:
         """
@@ -66,13 +68,13 @@ class RepoCommits:
             # "per_page": self.per_page,
             # "page": self.page
         }
-        
-        self.response = requests.get(f"{self.GITHUB_API_URL}/{endpoint}", params=params)
-        if self.response.status_code == 200:
-            self.status = 'Request Successful'
-        else:
-            self.status = 'Request Failed'
-        
+
+        self.response = requests.get(
+            f"{self.GITHUB_API_URL}/{endpoint}", params=params)
+        self.status_code = HTTPStatus(self.response.status_code).value
+        self.status_phrase = HTTPStatus(self.response.status_code).phrase
+        self.status_description = HTTPStatus(
+            self.response.status_code).description
 
     def get_report(self):
         """
@@ -87,7 +89,7 @@ class RepoCommits:
         :return: HTTPStatus
         """
 
-        return HTTPStatus(self.response.status_code).value
+        return self.status_code
 
     def get_response_code_phrase(self) -> str:
         """
@@ -95,7 +97,7 @@ class RepoCommits:
         :return: str
         """
 
-        return HTTPStatus(self.response.status_code).phrase
+        return self.status_phrase
 
     def get_response_code_description(self) -> str:
         """
@@ -103,7 +105,7 @@ class RepoCommits:
         :return: str
         """
 
-        return HTTPStatus(self.response.status_code).description
+        return self.status_description
 
     def get_commits_ids(self) -> List[str]:
         """
