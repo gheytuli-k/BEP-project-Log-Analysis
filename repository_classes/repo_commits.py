@@ -76,12 +76,24 @@ class RepoCommits:
         self.status_description = HTTPStatus(
             self.response.status_code).description
 
-    def get_report(self):
+    def get_report(self) -> None:
         """
         Returns a report of the commits retrieved.
         """
 
-        pass
+        assert self.status_code != 0, "No request made yet, call _make_request() first"
+        assert self.status_code == 200, "Request failed, check status code"
+        data = self.response.json()
+        if len(data) == 0:
+            return "No commits found"
+        else:
+            for commit in data:
+                commit_id = commit['sha']
+                commit_parent_id = commit['parents'][0]['sha']
+                commit_message = commit['commit']['message']
+                commit_timestamp = commit['commit']['author']['date']
+
+                print(f"Commit ID: {commit_id}\nParent ID: {commit_parent_id}\nMessage: {commit_message}\nTimestamp: {commit_timestamp}\n\n")
 
     def get_response_code(self) -> int:
         """
