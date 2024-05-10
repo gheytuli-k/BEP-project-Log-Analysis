@@ -29,6 +29,9 @@ class RepoCommits:
             The page number of commits to retrieve. Default is 1
     """
 
+    GITHUB_API_URL = "https://api.github.com"
+    status = 'No Request Made Yet'
+
     def __init__(self, repo_owner: str = None, repo_name: str = None, branch_name: str = "main", since: str = None, until: str = None, per_page: int = 100, page: int = 1) -> None:
         """
         Build a RepoCommits instance with the specified attributes.
@@ -50,13 +53,26 @@ class RepoCommits:
         # self.per_page = per_page
         # self.page = page
 
-
     def _make_request(self) -> None:
         """
         Makes a request to retrieve the commits from the repository.
         """
 
-        pass
+        endpoint = f"repos/{self.repo_owner}/{self.repo_name}/commits"
+        params = {
+            "sha": self.branch_name,
+            "since": self.since,
+            "until": self.until,
+            # "per_page": self.per_page,
+            # "page": self.page
+        }
+        
+        self.response = requests.get(f"{self.GITHUB_API_URL}/{endpoint}", params=params)
+        if self.response.status_code == 200:
+            self.status = 'Request Successful'
+        else:
+            self.status = 'Request Failed'
+        
 
     def get_report(self):
         """
@@ -65,21 +81,29 @@ class RepoCommits:
 
         pass
 
-    def get_response_code(self) -> HTTPStatus:
+    def get_response_code(self) -> int:
         """
         Returns the HTTP status code of the request.
         :return: HTTPStatus
         """
 
-        pass
+        return HTTPStatus(self.response.status_code).value
 
-    def get_response_code_message(self) -> str:
+    def get_response_code_phrase(self) -> str:
+        """
+        Returns the phrase associated with the HTTP status code.
+        :return: str
+        """
+
+        return HTTPStatus(self.response.status_code).phrase
+
+    def get_response_code_description(self) -> str:
         """
         Returns the message associated with the HTTP status code.
         :return: str
         """
 
-        pass
+        return HTTPStatus(self.response.status_code).description
 
     def get_commits_ids(self) -> List[str]:
         """
