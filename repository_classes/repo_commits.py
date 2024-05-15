@@ -11,23 +11,16 @@ class RepoCommits(RequestFromRepo):
     This class provides methods to fetch commits from a repository
     within a specified date range.
 
-    ----------
-
     Attributes:
-        repo_owner : str
-            The owner of the repository
-        repo_name : str
-            The name of the repository
-        branch_name : str
-            The name of the branch. Default is "main"
-        since : str
-            The start date for filtering commits. Default is None
-        until : str
-            The end date for filtering commits. Default is None
-        per_page : int
-            The number of commits to retrieve per page. Default is 100
-        page : int
-            The page number of commits to retrieve. Default is 1
+    ----------
+    GITHUB_API_URL : str
+        GitHub API URL
+    status_code : int
+        status code of the request response
+    status_phrase : str
+        status phrase of the request response
+    status_description : str
+        status description of the request response
     """
 
     GITHUB_API_URL = "https://api.github.com"
@@ -38,7 +31,8 @@ class RepoCommits(RequestFromRepo):
     def set_request_info(self, *args, **kwargs) -> None:
         """
         Set the request information
-        :param repo_owner: The owner of the repository
+        
+        :param repo_owner: The owner of the repository 
         :param repo_name: The name of the repository
         :param branch_name: The name of the branch
         :param since: The start date for filtering commits
@@ -47,7 +41,7 @@ class RepoCommits(RequestFromRepo):
         :param page: The page number of commits to retrieve
         :return: None
         """
-        
+
         self.repo_owner = kwargs.get("repo_owner")
         self.repo_name = kwargs.get("repo_name")
         self.branch_name = kwargs.get("branch_name")
@@ -59,6 +53,7 @@ class RepoCommits(RequestFromRepo):
     def set_branch(self, branch_name: str) -> None:
         """
         Set the branch name.
+
         :param branch_name: The name of the branch
         :return: None
         """
@@ -68,6 +63,8 @@ class RepoCommits(RequestFromRepo):
     def make_request(self) -> None:
         """
         Makes a request to retrieve the commits from the repository.
+
+        :return: None
         """
 
         endpoint = f"repos/{self.repo_owner}/{self.repo_name}/commits"
@@ -89,6 +86,8 @@ class RepoCommits(RequestFromRepo):
     def get_report(self) -> None:
         """
         Returns a report of the commits retrieved.
+
+        :return: None
         """
 
         assert self.status_code != 0, "No request made yet, call _make_request() first"
@@ -112,6 +111,7 @@ class RepoCommits(RequestFromRepo):
     def get_response_code(self) -> int:
         """
         Returns the HTTP status code of the request.
+
         :return: int
         """
 
@@ -120,6 +120,7 @@ class RepoCommits(RequestFromRepo):
     def get_response_code_phrase(self) -> str:
         """
         Returns the phrase associated with the HTTP status code.
+
         :return: str
         """
 
@@ -128,6 +129,7 @@ class RepoCommits(RequestFromRepo):
     def get_response_code_description(self) -> str:
         """
         Returns the message associated with the HTTP status code.
+
         :return: str
         """
 
@@ -136,6 +138,7 @@ class RepoCommits(RequestFromRepo):
     def get_commits_ids(self) -> List[str]:
         """
         Returns a list of commit IDs.
+
         :return: List[str]
         """
 
@@ -149,6 +152,7 @@ class RepoCommits(RequestFromRepo):
         """
         Prints all the request attributes.
         """
+
         print(f"Repository Owner: {self.repo_owner}")
         print(f"Repository Name: {self.repo_name}")
         print(f"Branch Name: {self.branch_name}")
