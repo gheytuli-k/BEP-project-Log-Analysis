@@ -23,11 +23,6 @@ class RepoCommits(RequestFromRepo):
         status description of the request response
     """
 
-    GITHUB_API_URL = "https://api.github.com"
-    status_code = 0
-    status_phrase = ""
-    status_description = "No request made yet"
-
     def set_request_info(self, *args, **kwargs) -> None:
         """
         Set the request information
