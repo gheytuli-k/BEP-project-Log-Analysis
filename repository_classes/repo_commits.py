@@ -66,8 +66,8 @@ class RepoCommits(RequestFromRepo):
             "sha": self.branch_name,
             "since": self.since,
             "until": self.until,
-            # "per_page": self.per_page,
-            # "page": self.page
+            "per_page": self.per_page,
+            "page": self.page
         }
 
         self.response = requests.get(
