@@ -56,6 +56,15 @@ class RepoCommits(RequestFromRepo):
         self.per_page = kwargs.get("per_page")
         self.page = kwargs.get("page")
 
+    def set_branch(self, branch_name: str) -> None:
+        """
+        Set the branch name.
+        :param branch_name: The name of the branch
+        :return: None
+        """
+
+        self.branch_name = branch_name
+
     def _make_request(self) -> None:
         """
         Makes a request to retrieve the commits from the repository.
@@ -99,14 +108,6 @@ class RepoCommits(RequestFromRepo):
 
                 print(
                     f"Commit ID: {commit_id}\nParent ID: {commit_parent_id}\nMessage: {commit_message}\nTimestamp: {commit_timestamp}\n\n")
-                
-    # def set_branch(self, branch_name: str) -> None:
-    #     """
-    #     Set the branch name.
-    #     :param branch_name: The name of the branch
-    #     """
-
-    #     self.branch_name = branch_name
 
     def get_response_code(self) -> int:
         """
