@@ -129,29 +129,3 @@ class RepoCommits(RequestFromRepo):
         commits = [commit["sha"] for commit in data]
         return commits
 
-    def get_response_code(self) -> int:
-        """
-        Returns the HTTP status code of the request.
-
-        :return: int
-        """
-
-        return self.status_code
-
-    def get_response_code_phrase(self) -> str:
-        """
-        Returns the phrase associated with the HTTP status code.
-
-        :return: str
-        """
-
-        return self.status_phrase
-
-    def get_response_code_description(self) -> str:
-        """
-        Returns the message associated with the HTTP status code.
-
-        :return: str
-        """
-
-        return self.status_description
