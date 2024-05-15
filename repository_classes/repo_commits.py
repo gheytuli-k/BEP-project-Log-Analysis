@@ -65,7 +65,7 @@ class RepoCommits(RequestFromRepo):
 
         self.branch_name = branch_name
 
-    def _make_request(self) -> None:
+    def make_request(self) -> None:
         """
         Makes a request to retrieve the commits from the repository.
         """
@@ -146,6 +146,4 @@ class RepoCommits(RequestFromRepo):
         return commits
 
     def get_info(self):
-        pass
-    def make_request(self):
         pass
