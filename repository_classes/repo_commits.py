@@ -145,5 +145,14 @@ class RepoCommits(RequestFromRepo):
         commits = [commit["sha"] for commit in data]
         return commits
 
-    def get_info(self):
-        pass
+    def get_info(self) -> None:
+        """
+        Prints all the request attributes.
+        """
+        print(f"Repository Owner: {self.repo_owner}")
+        print(f"Repository Name: {self.repo_name}")
+        print(f"Branch Name: {self.branch_name}")
+        print(f"Since: {self.since}")
+        print(f"Until: {self.until}")
+        print(f"Per Page: {self.per_page}")
+        print(f"Page: {self.page}")
