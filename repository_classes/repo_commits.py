@@ -1,9 +1,10 @@
+from repository_classes import RequestFromRepo
 import requests
 from http import HTTPStatus
 from typing import List
 
 
-class RepoCommits:
+class RepoCommits(RequestFromRepo):
     """
     A class for interacting with a repository's commit history.
 
@@ -34,9 +35,9 @@ class RepoCommits:
     status_phrase = ""
     status_description = "No request made yet"
 
-    def __init__(self, repo_owner: str = None, repo_name: str = None, branch_name: str = "main", since: str = None, until: str = None, per_page: int = 100, page: int = 1) -> None:
+    def set_request_info(self, *args, **kwargs) -> None:
         """
-        Build a RepoCommits instance with the specified attributes.
+        Set the request information
         :param repo_owner: The owner of the repository
         :param repo_name: The name of the repository
         :param branch_name: The name of the branch
@@ -46,14 +47,14 @@ class RepoCommits:
         :param page: The page number of commits to retrieve
         :return: None
         """
-
-        self.repo_owner = repo_owner
-        self.repo_name = repo_name
-        self.branch_name = branch_name
-        self.since = since
-        self.until = until
-        # self.per_page = per_page
-        # self.page = page
+        
+        self.repo_owner = kwargs.get("repo_owner")
+        self.repo_name = kwargs.get("repo_name")
+        self.branch_name = kwargs.get("branch_name")
+        self.since = kwargs.get("since")
+        self.until = kwargs.get("until")
+        self.per_page = kwargs.get("per_page")
+        self.page = kwargs.get("page")
 
     def _make_request(self) -> None:
         """
@@ -98,11 +99,19 @@ class RepoCommits:
 
                 print(
                     f"Commit ID: {commit_id}\nParent ID: {commit_parent_id}\nMessage: {commit_message}\nTimestamp: {commit_timestamp}\n\n")
+                
+    # def set_branch(self, branch_name: str) -> None:
+    #     """
+    #     Set the branch name.
+    #     :param branch_name: The name of the branch
+    #     """
+
+    #     self.branch_name = branch_name
 
     def get_response_code(self) -> int:
         """
         Returns the HTTP status code of the request.
-        :return: HTTPStatus
+        :return: int
         """
 
         return self.status_code
@@ -134,3 +143,8 @@ class RepoCommits:
         data = self.response.json()
         commits = [commit["sha"] for commit in data]
         return commits
+
+    def get_info(self):
+        pass
+    def make_request(self):
+        pass
