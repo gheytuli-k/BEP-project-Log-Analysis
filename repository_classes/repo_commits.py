@@ -31,7 +31,7 @@ class RepoCommits(RequestFromRepo):
     def set_request_info(self, *args, **kwargs) -> None:
         """
         Set the request information
-        
+
         :param repo_owner: The owner of the repository 
         :param repo_name: The name of the repository
         :param branch_name: The name of the branch
@@ -59,6 +59,19 @@ class RepoCommits(RequestFromRepo):
         """
 
         self.branch_name = branch_name
+
+    def get_info(self) -> None:
+        """
+        Prints all the request attributes.
+        """
+
+        print(f"Repository Owner: {self.repo_owner}")
+        print(f"Repository Name: {self.repo_name}")
+        print(f"Branch Name: {self.branch_name}")
+        print(f"Since: {self.since}")
+        print(f"Until: {self.until}")
+        print(f"Per Page: {self.per_page}")
+        print(f"Page: {self.page}")
 
     def make_request(self) -> None:
         """
@@ -108,6 +121,19 @@ class RepoCommits(RequestFromRepo):
                 print(
                     f"Commit ID: {commit_id}\nParent ID: {commit_parent_id}\nMessage: {commit_message}\nTimestamp: {commit_timestamp}\n\n")
 
+    def get_commits_ids(self) -> List[str]:
+        """
+        Returns a list of commit IDs.
+
+        :return: List[str]
+        """
+
+        assert self.status_code != 0, "No request made yet, call _make_request() first"
+        assert self.status_code == 200, "Request failed, check status code"
+        data = self.response.json()
+        commits = [commit["sha"] for commit in data]
+        return commits
+
     def get_response_code(self) -> int:
         """
         Returns the HTTP status code of the request.
@@ -134,29 +160,3 @@ class RepoCommits(RequestFromRepo):
         """
 
         return self.status_description
-
-    def get_commits_ids(self) -> List[str]:
-        """
-        Returns a list of commit IDs.
-
-        :return: List[str]
-        """
-
-        assert self.status_code != 0, "No request made yet, call _make_request() first"
-        assert self.status_code == 200, "Request failed, check status code"
-        data = self.response.json()
-        commits = [commit["sha"] for commit in data]
-        return commits
-
-    def get_info(self) -> None:
-        """
-        Prints all the request attributes.
-        """
-
-        print(f"Repository Owner: {self.repo_owner}")
-        print(f"Repository Name: {self.repo_name}")
-        print(f"Branch Name: {self.branch_name}")
-        print(f"Since: {self.since}")
-        print(f"Until: {self.until}")
-        print(f"Per Page: {self.per_page}")
-        print(f"Page: {self.page}")
