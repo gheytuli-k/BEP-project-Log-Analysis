@@ -3,12 +3,20 @@ from abc import ABC, abstractmethod
 
 class RequestFromRepo(ABC):
     """
-    Abstract class for requests to repository    
+    Abstract class for requests to repository API.    
 
     Attributes:
     ----------
     task : str
         brief task description
+    GITHUB_API_URL : str
+        GitHub API URL
+    status_code : int
+        status code of the request response
+    status_phrase : str
+        status phrase of the request response
+    status_description : str
+        status description of the request response
     """
 
     GITHUB_API_URL = "https://api.github.com"
@@ -50,7 +58,7 @@ class RequestFromRepo(ABC):
         pass
 
     @abstractmethod
-    def set_request_info(self, *args, **kwargs):
+    def set_request_info(self, *args, **kwargs) -> None:
         """
         Set request information
         """
