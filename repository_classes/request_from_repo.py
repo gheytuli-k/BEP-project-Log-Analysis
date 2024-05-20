@@ -30,31 +30,22 @@ class RequestFromRepo(ABC):
         :param task: brief task description
         :return: None
         """
+        
         self.task = task
-
-    def get_response_code(self) -> int:
-        """
-        Return the status code of the response
-        """
-        return self.status_code
-
-    def get_response_phrase(self) -> str:
-        """
-        Return the status phrase of the response
-        """
-        return self.status_phrase
-
-    def get_response_description(self) -> str:
-        """
-        Return the status description of the response
-        """
-        return self.status_description
+        self.repo_owner = None
+        self.repo_name = None
+        self.branch_name = None
+        self.since = None
+        self.until = None
+        self.per_page = None
+        self.page = None
 
     @abstractmethod
     def get_info(self) -> None:
         """
-        Print the instance information
+        Prints all the request attributes.
         """
+
         pass
 
     @abstractmethod
@@ -62,6 +53,7 @@ class RequestFromRepo(ABC):
         """
         Set request information
         """
+
         pass
 
     @abstractmethod
@@ -69,4 +61,34 @@ class RequestFromRepo(ABC):
         """
         Makes a request to the repository with the set request information
         """
+
         pass
+
+    def get_response_code(self) -> int:
+        """
+        Return the status code of the response
+
+        :return: int
+        """
+        
+        return self.status_code
+
+    def get_response_phrase(self) -> str:
+        """
+        Return the status phrase of the response
+
+        :return: str
+        """
+
+        return self.status_phrase
+
+    def get_response_description(self) -> str:
+        """
+        Return the status description of the response
+
+        :return: str
+        """
+        
+        return self.status_description
+
+
