@@ -49,10 +49,6 @@ class RepoJobsWorkflow(RequestFromRepo):
         """
 
         endpoint = f"repos/{self.repo_owner}/{self.repo_name}/actions/runs/{self.workflow_id}/jobs"
-        # headers = {
-        #     'Authorization': f'token {self.AUTHENTICATION_KEY}',
-        #     'Accept': 'application/vnd.github.v3.raw'
-        # }
 
         self.response = requests.get(f"{self.GITHUB_API_URL}/{endpoint}")
         self.update_jobs_info()
