@@ -1,6 +1,11 @@
 from repository_classes import RequestFromRepo
 import requests 
 from http import HTTPStatus
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file
+load_dotenv(".env")
 
 class RepoJobsWorkflow(RequestFromRepo):
     
@@ -83,4 +88,33 @@ class RepoJobsWorkflow(RequestFromRepo):
             jobs.append(job_info)
 
         self.jobs = jobs
+
+
+    def store_runs_logs(self, path: str, AUTHENTICATION_KEY: str) -> None:
+        """
+        Store the logs of the runs in the specified path.
+
+        :param path: The path to store the logs
+        :return: None
+        """
+         
+        headers = {
+            'Authorization': f'token {AUTHENTICATION_KEY}',
+            'Accept': 'application/vnd.github.v3.raw'
+        }
+
+
+        response = requests.get(f"{self.GITHUB_API_URL}/repos/{self.repo_owner}/{self.repo_name}/actions/runs/{self.workflow_id}/logs", headers=headers)
+
+        if response.status_code != 200:
+            raise Exception(f"Failed to fetch logs from {self.repo_owner}/{self.repo_name} with status code {response.status_code}")
+
+        # store the logs in the specified path
+        with open (f"{path}\\logs\\zipped\\{self.workflow_id}.zip", "wb") as file:
+            file.write(response.content)
+        
+        
+
+
+
 
