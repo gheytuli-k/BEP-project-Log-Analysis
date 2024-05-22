@@ -2,6 +2,7 @@ from repository_classes import RequestFromRepo
 import requests 
 from http import HTTPStatus
 import os
+from typing import List, Dict
 from dotenv import load_dotenv
 
 # Load environment variables from a .env file
@@ -89,6 +90,19 @@ class RepoJobsWorkflow(RequestFromRepo):
 
         self.jobs = jobs
 
+    def get_failed_jobs(self) -> Dict[str, List[str]]:
+        """
+        Get the failed jobs from the response.
+
+        :return: Dict[str, List[str]]
+        """
+
+        failed_jobs = {}
+        for job in self.jobs:
+            if job["conclusion"] == "failure":
+                failed_jobs[job["name"]] = job["failure_steps"]
+
+        return failed_jobs
 
     def store_runs_logs(self, path: str, AUTHENTICATION_KEY: str) -> None:
         """
