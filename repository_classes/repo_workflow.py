@@ -1,6 +1,7 @@
 from repository_classes import RequestFromRepo
 import requests
 from http import HTTPStatus
+from typing import List, Dict
 import os
 
 class RepoWorkflow(RequestFromRepo):
@@ -59,7 +60,68 @@ class RepoWorkflow(RequestFromRepo):
 
         self.response = requests.get(
             f"{self.GITHUB_API_URL}/{endpoint}", params=params)
+        self.update_workflow_info()
         self.status_code = HTTPStatus(self.response.status_code).value
         self.status_phrase = HTTPStatus(self.response.status_code).phrase
         self.status_description = HTTPStatus(
             self.response.status_code).description
+
+    def update_workflow_info(self) -> None:
+        """
+        Update the workflow information.
+
+        :return: None
+        """
+        failed_workflows = []
+        successful_workflows = []
+
+        for workflow in self.response.json()['workflow_runs']:
+            workflow_information = {}
+            
+            workflow_information['name'] = workflow['name']
+            workflow_information['id'] = workflow['id']
+            workflow_information['status'] = workflow['status']
+            workflow_information['conclusion'] = workflow['conclusion']
+            workflow_information['path'] = workflow['path']
+            workflow_information['event'] = workflow['event']
+            workflow_information['created_at'] = workflow['created_at']
+            workflow_information['url'] = workflow['url']
+            workflow_information['jobs_url'] = workflow['jobs_url']
+            workflow_information['logs_url'] = workflow['logs_url']
+
+            if workflow['conclusion'] == 'failure':
+                failed_workflows.append(workflow_information)
+            else:
+                successful_workflows.append(workflow_information)
+
+        self.nr_of_workflows = self.response.json()['total_count']
+        self.failed_workflows = failed_workflows
+        self.successful_workflows = successful_workflows
+
+    def get_successful_workflows(self) -> List[Dict]:
+        """
+        Get the successful workflows.
+
+        :return: List[Dict]
+        """
+
+        return self.successful_workflows
+
+    def get_failed_workflows(self) -> List[Dict]:
+        """
+        Get the failed workflows.
+
+        :return: List[Dict]
+        """
+
+        return self.failed_workflows
+
+    def get_workflow_info(self) -> None:
+        """
+        Get information about the workflows in the request made.
+        
+        :return: None
+        """
+
+        print(f"Total count of workflows: {self.response.json()['total_count']}")
+        
