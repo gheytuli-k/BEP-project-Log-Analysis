@@ -1,4 +1,4 @@
-console.log ('Hello, Demo!')
+console.mlog ('Hello, Demo!')
 
 var moment = require('moment');
 var date = moment().format('LL');
