@@ -93,7 +93,7 @@ class RepoCommits(RequestFromRepo):
 
     def get_report(self) -> None:
         """
-        Returns a report of the commits retrieved.
+        Prints a report of the commits retrieved.
 
         :return: None
         """
