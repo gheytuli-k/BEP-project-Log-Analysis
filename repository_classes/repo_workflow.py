@@ -54,8 +54,8 @@ class RepoWorkflow(RequestFromRepo):
             "sha": self.branch_name,
             "since": self.since,
             "until": self.until,
-            # "per_page": self.per_page,
-            # "page": self.page
+            "per_page": self.per_page,
+            "page": self.page
         }
 
         self.response = requests.get(
@@ -72,14 +72,17 @@ class RepoWorkflow(RequestFromRepo):
 
         :return: None
         """
+        
         failed_workflows = []
         successful_workflows = []
 
         for workflow in self.response.json()['workflow_runs']:
             workflow_information = {}
-            
+
             workflow_information['name'] = workflow['name']
             workflow_information['id'] = workflow['id']
+            workflow_information['display_title'] = workflow['display_title']
+            workflow_information['head_sha'] = workflow['head_sha']
             workflow_information['status'] = workflow['status']
             workflow_information['conclusion'] = workflow['conclusion']
             workflow_information['path'] = workflow['path']
