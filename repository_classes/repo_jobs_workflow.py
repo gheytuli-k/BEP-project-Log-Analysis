@@ -68,6 +68,7 @@ class RepoJobsWorkflow(RequestFromRepo):
         for job in self.response.json().get("jobs"):
             job_info = {}
             job_info["name"] = job.get("name")
+            job_info["number"] = job.get("number")
             job_info["run_id"] = job.get("run_id")
             job_info["status"] = job.get("status")
             job_info["conclusion"] = job.get("conclusion")
@@ -76,9 +77,11 @@ class RepoJobsWorkflow(RequestFromRepo):
 
             for step in job.get("steps"):
                 if step.get("conclusion") == "success":
-                    success_steps.append(step.get("name"))
+                    step_name_number = str(step.get("number"))+"_"+step.get("name")
+                    success_steps.append(step_name_number)
                 else:
-                    failure_steps.append(step.get("name"))
+                    step_name_number = str(step.get("number"))+"_"+step.get("name")
+                    failure_steps.append(step_name_number)
             
             job_info["success_steps"] = success_steps
             job_info["failure_steps"] = failure_steps
@@ -122,7 +125,6 @@ class RepoJobsWorkflow(RequestFromRepo):
         # store the logs in the specified path
         with open (f"{path}\\logs\\zipped\\{self.workflow_id}.zip", "wb") as file:
             file.write(response.content)
-        
         
 
 
